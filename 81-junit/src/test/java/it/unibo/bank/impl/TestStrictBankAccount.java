@@ -28,7 +28,9 @@ public class TestStrictBankAccount {
     // 2. Test the initial state of the StrictBankAccount
     @Test
     public void testInitialization() {
-        fail();
+        Assertions.assertEquals(0.0, bankAccount.getBalance());
+        Assertions.assertEquals(0, bankAccount.getTransactionsCount());
+        Assertions.assertEquals(mRossi, bankAccount.getAccountHolder());
     }
 
 
