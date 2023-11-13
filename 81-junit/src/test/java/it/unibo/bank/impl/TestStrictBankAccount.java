@@ -37,7 +37,14 @@ public class TestStrictBankAccount {
     // 3. Perform a deposit of 100€, compute the management fees, and check that the balance is correctly reduced.
     @Test
     public void testManagementFees() {
-        fail();
+        double expectedTransaction = INITIAL_AMOUNT;
+        Assertions.assertFalse(bankAccount.getTransactionsCount() > 0);
+        bankAccount.deposit(mRossi.getUserID(), INITIAL_AMOUNT);
+        Assertions.assertEquals(expectedTransaction, bankAccount.getBalance());
+        expectedTransaction = expectedTransaction - (MANAGEMENT_FEE + bankAccount.getTransactionsCount() * TRANSACTION_FEE);
+        bankAccount.chargeManagementFees(mRossi.getUserID());
+        
+        Assertions.assertEquals(expectedTransaction, bankAccount.getBalance());
     }
 
     // 4. Test the withdraw of a negative value
