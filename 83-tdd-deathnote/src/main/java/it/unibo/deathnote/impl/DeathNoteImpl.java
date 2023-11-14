@@ -11,6 +11,8 @@ import it.unibo.deathnote.api.DeathNote;
 public class DeathNoteImpl implements DeathNote {
 
     private Map<String, List<String>> names = new HashMap<>();
+    private String lastWrittenName;
+    private String lastCauseOfDeath;
     /* 
     public DeathNoteImpl(List<String> names) {
         this.names = names;
@@ -28,26 +30,45 @@ public class DeathNoteImpl implements DeathNote {
     public void writeName(String name) {
         if(!Objects.isNull(name)) {
             names.put(name, new ArrayList<>(2));
+            lastWrittenName = name;
         }
         throw new NullPointerException("non existing name"); 
     }
 
     @Override
     public boolean writeDeathCause(String cause) {
-        if(Objects.isNull(names)) {
+        if(names.isEmpty()) {
             throw new IllegalStateException("there is no name written in this DeathNote");  
         }
         if(Objects.isNull(cause)) {
             throw new IllegalStateException("the cause is null");
         }
-        
-        return false;
+        if(Objects.isNull(lastWrittenName)) {
+            throw new IllegalStateException("there is no name written in this DeathNote");
+        }
+        double timeWrite = System.currentTimeMillis();
+        names.get(lastWrittenName).add(0, cause);
+        lastCauseOfDeath = cause;
+        //lastWrittenName = null;
+        return (System.currentTimeMillis() - timeWrite)>0.0040 ? false : true;
     }
 
     @Override
     public boolean writeDetails(String details) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeDetails'");
+        if(names.isEmpty()) {
+            throw new IllegalStateException("there is no name written in this DeathNote");  
+        }
+        if(Objects.isNull(details)) {
+            throw new IllegalStateException("the cause is null");
+        }
+        if(Objects.isNull(lastCauseOfDeath) || Objects.isNull(lastWrittenName)) {
+            throw new IllegalStateException("there is no name or cause written in this DeathNote");
+        }
+        double timeWrite = System.currentTimeMillis();
+        names.get(lastWrittenName).add(1, details);
+        lastCauseOfDeath = null;
+        lastWrittenName = null;
+        return false;    
     }
 
     @Override
