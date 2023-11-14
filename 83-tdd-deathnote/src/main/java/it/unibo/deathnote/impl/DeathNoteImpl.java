@@ -1,13 +1,20 @@
 package it.unibo.deathnote.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import it.unibo.deathnote.api.DeathNote;
 
 public class DeathNoteImpl implements DeathNote {
 
-    private List<String> names = new ArrayList<>();
+    private Map<String, List<String>> names = new HashMap<>();
+    /* 
+    public DeathNoteImpl(List<String> names) {
+        this.names = names;
+    }*/
 
     @Override
     public String getRule(int ruleNumber) {   
@@ -20,15 +27,21 @@ public class DeathNoteImpl implements DeathNote {
     @Override
     public void writeName(String name) {
         if(!Objects.isNull(name)) {
-
+            names.put(name, new ArrayList<>(2));
         }
         throw new NullPointerException("non existing name"); 
     }
 
     @Override
     public boolean writeDeathCause(String cause) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeDeathCause'");
+        if(Objects.isNull(names)) {
+            throw new IllegalStateException("there is no name written in this DeathNote");  
+        }
+        if(Objects.isNull(cause)) {
+            throw new IllegalStateException("the cause is null");
+        }
+        
+        return false;
     }
 
     @Override
