@@ -38,19 +38,27 @@ public class MiniGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
          * Handlers
-         */
+         
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 System.out.println(randomGenerator.nextInt());
             }
-        }); 
+        }); */
         final JPanel newcanvas = new JPanel();
         newcanvas.setLayout(new BoxLayout(newcanvas, BoxLayout.X_AXIS));
         canvas.add(newcanvas, BorderLayout.CENTER);
         newcanvas.add(write, BorderLayout.CENTER);
         final JTextField result = new JTextField("Result",10);
         canvas.add(result, BorderLayout.NORTH);
+        write.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int randgen = randomGenerator.nextInt();
+                result.setText("" + randgen);    
+                System.out.println(randgen);
+            }
+        });
     }
 
     private void display() {
