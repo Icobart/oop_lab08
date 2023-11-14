@@ -1,6 +1,7 @@
 package it.unibo.deathnote;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,5 +26,13 @@ class TestDeathNote {
         assertEquals("rule number out of bounds", notebook.getRule(0));
         assertEquals("rule number out of bounds", notebook.getRule(50));
         
+    }
+
+    @Test
+    public void testRulesNotEmpty() {
+        for(int i = 1; i<=13; i++) {
+            assertNotEquals("", notebook.getRule(i));
+            assertNotEquals(null, notebook.getRule(i));
+        }
     }
 }
