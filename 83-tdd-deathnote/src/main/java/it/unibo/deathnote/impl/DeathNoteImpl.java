@@ -12,7 +12,6 @@ public class DeathNoteImpl implements DeathNote {
 
     private Map<String, List<String>> names = new HashMap<>();
     private String lastWrittenName;
-    private String lastCauseOfDeath;
     /* 
     public DeathNoteImpl(List<String> names) {
         this.names = names;
@@ -48,7 +47,6 @@ public class DeathNoteImpl implements DeathNote {
         }
         double timeWrite = System.currentTimeMillis();
         names.get(lastWrittenName).add(0, cause);
-        lastCauseOfDeath = cause;
         //lastWrittenName = null;
         return (System.currentTimeMillis() - timeWrite)>0.0040 ? false : true;
     }
@@ -61,32 +59,34 @@ public class DeathNoteImpl implements DeathNote {
         if(Objects.isNull(details)) {
             throw new IllegalStateException("the cause is null");
         }
-        if(Objects.isNull(lastCauseOfDeath) || Objects.isNull(lastWrittenName)) {
+        if(Objects.isNull(Objects.isNull(lastWrittenName))) {
             throw new IllegalStateException("there is no name or cause written in this DeathNote");
         }
         double timeWrite = System.currentTimeMillis();
         names.get(lastWrittenName).add(1, details);
-        lastCauseOfDeath = null;
         lastWrittenName = null;
-        return false;    
+        return (System.currentTimeMillis() - timeWrite)>6.0040 ? false : true;    
     }
 
     @Override
     public String getDeathCause(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDeathCause'");
+        if(!isNameWritten(name)) {
+            throw new IllegalArgumentException("the provided name is not written in this DeathNote");
+        }
+        return Objects.isNull(names.get(name).get(0)) ? names.get(name).get(1) : names.get(name).get(0);
     }
 
     @Override
     public String getDeathDetails(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDeathDetails'");
+        if(!isNameWritten(name)) {
+            throw new IllegalArgumentException("the provided name is not written in this DeathNote");
+        }
+        return Objects.isNull(names.get(name).get(1)) ? "" : names.get(name).get(1);
     }
 
     @Override
     public boolean isNameWritten(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isNameWritten'");
+        return names.containsKey(name) ? true : false;
     }
 
 }
