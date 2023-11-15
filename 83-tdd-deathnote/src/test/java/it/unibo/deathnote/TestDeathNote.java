@@ -47,6 +47,11 @@ class TestDeathNote {
 
     @Test
     public void testWriteCauseOfDeath() {
+        //assertEquals("there is no name written in this DeathNote", notebook.writeDeathCause("sudden death"));
+        notebook.writeName("Alice");
+        assertEquals("heart attack", notebook.getDeathCause("Alice"));
+        notebook.writeName("Bob");
+        notebook.writeDeathCause("karting accident");
         
     }
 

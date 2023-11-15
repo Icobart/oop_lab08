@@ -10,7 +10,7 @@ import it.unibo.deathnote.api.DeathNote;
 
 public class DeathNoteImpl implements DeathNote {
 
-    private Map<String, List<String>> names = new HashMap<>();
+    private Map<String, Note> names = new HashMap<>();
     private String lastWrittenName;
     /* 
     public DeathNoteImpl(List<String> names) {
@@ -28,7 +28,7 @@ public class DeathNoteImpl implements DeathNote {
     @Override
     public void writeName(String name) {
         if(!Objects.isNull(name)) {
-            names.put(name, new ArrayList<>(2));
+            names.put(name, new ArrayList<>(List.of("heart attack", "")));
             lastWrittenName = name;
         }
         else {
@@ -44,12 +44,8 @@ public class DeathNoteImpl implements DeathNote {
         if(Objects.isNull(cause)) {
             throw new IllegalStateException("the cause is null");
         }
-        if(Objects.isNull(lastWrittenName)) {
-            throw new IllegalStateException("there is no name written in this DeathNote");
-        }
-        double timeWrite = System.currentTimeMillis();
+        long timeWrite = System.currentTimeMillis();
         names.get(lastWrittenName).add(0, cause);
-        //lastWrittenName = null;
         return (System.currentTimeMillis() - timeWrite)>0.0040 ? false : true;
     }
 
@@ -61,12 +57,8 @@ public class DeathNoteImpl implements DeathNote {
         if(Objects.isNull(details)) {
             throw new IllegalStateException("the cause is null");
         }
-        if(Objects.isNull(Objects.isNull(lastWrittenName))) {
-            throw new IllegalStateException("there is no name or cause written in this DeathNote");
-        }
-        double timeWrite = System.currentTimeMillis();
+        long timeWrite = System.currentTimeMillis();
         names.get(lastWrittenName).add(1, details);
-        lastWrittenName = null;
         return (System.currentTimeMillis() - timeWrite)>6.0040 ? false : true;    
     }
 
@@ -75,7 +67,7 @@ public class DeathNoteImpl implements DeathNote {
         if(!isNameWritten(name)) {
             throw new IllegalArgumentException("the provided name is not written in this DeathNote");
         }
-        return Objects.isNull(names.get(name).get(0)) ? names.get(name).get(1) : names.get(name).get(0);
+        return names.get(name).get(0);
     }
 
     @Override
@@ -83,12 +75,19 @@ public class DeathNoteImpl implements DeathNote {
         if(!isNameWritten(name)) {
             throw new IllegalArgumentException("the provided name is not written in this DeathNote");
         }
-        return Objects.isNull(names.get(name).get(1)) ? "" : names.get(name).get(1);
+        return names.get(name).get(1);
     }
 
     @Override
     public boolean isNameWritten(String name) {
         return names.containsKey(name) ? true : false;
+    }
+
+    private static final class Note {
+        private final String causeOfDeath;
+        private final String details;
+        private final long timeOfDeath;
+
     }
 
 }
