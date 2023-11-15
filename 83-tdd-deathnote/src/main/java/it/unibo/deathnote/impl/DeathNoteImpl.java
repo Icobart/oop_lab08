@@ -111,13 +111,21 @@ public class DeathNoteImpl implements DeathNote {
         }
 
         public boolean writeCause(final String cause) {
+            return System.currentTimeMillis() - getTimeOfDeath() <= 40 ? successCause(cause) : false;
+        }
+
+        private boolean successCause(final String cause) {
             this.causeOfDeath = cause;
-            return System.currentTimeMillis() - getTimeOfDeath() > 40;
+            return true;
         }
 
         public boolean writeDetail(final String detail) {
+            return System.currentTimeMillis() - getTimeOfDeath() <= 6040 ? successDetail(detail): false;
+        }
+
+        private boolean successDetail(final String detail) {
             this.details = detail;
-            return System.currentTimeMillis() - getTimeOfDeath() > 6040;
+            return true;
         }
 
     }
