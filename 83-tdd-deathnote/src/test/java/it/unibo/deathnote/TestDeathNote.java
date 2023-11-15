@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static java.lang.Thread.sleep;
+import static it.unibo.deathnote.api.DeathNote.RULES;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +28,31 @@ class TestDeathNote {
 
     @Test
     public void testRulesBounds() {
-        assertEquals("""
-        The human whose name is written in this note shall die.
-        """, notebook.getRule(1));
-        assertEquals("rule number out of bounds", notebook.getRule(0));
-        assertEquals("rule number out of bounds", notebook.getRule(50));
+        assertThrows(new IllegalArgumentThrower() {
+
+            @Override
+            public void launch() {
+                notebook.getRule(-1);  
+            }
+            
+        });
+
+        assertThrows(new IllegalArgumentThrower() {
+
+            @Override
+            public void launch() {
+                notebook.getRule(0);  
+            }
+            
+        });
+        assertThrows(new IllegalArgumentThrower() {
+
+            @Override
+            public void launch() {
+                notebook.getRule(RULES.size()+1);  
+            }
+            
+        });
         
     }
 
@@ -53,7 +75,14 @@ class TestDeathNote {
 
     @Test
     public void testWriteCauseOfDeath() throws InterruptedException {
-        //assertEquals("there is no name written in this DeathNote", notebook.writeDeathCause("sudden death"));
+        assertThrows(new IllegalStateThrower() {
+
+            @Override
+            public void launch() {
+                notebook.writeDeathCause("he knew too much");    
+            }
+            
+        });
         notebook.writeName(ALICE);
         assertEquals("heart attack", notebook.getDeathCause(ALICE));
         notebook.writeName(BOB);
@@ -66,7 +95,14 @@ class TestDeathNote {
 
     @Test
     public void testWriteDetails() throws InterruptedException {
-        //assertEquals("there is no name written in this DeathNote", notebook.writeDeathCause("sudden death"));
+        assertThrows(new IllegalStateThrower() {
+
+            @Override
+            public void launch() {
+                notebook.writeDetails("run over by a road pirate");  
+            }
+            
+        });
         notebook.writeName(ALICE);
         assertEquals("", notebook.getDeathDetails(ALICE));
         assertTrue(notebook.writeDetails("ran for too long"));
@@ -75,6 +111,27 @@ class TestDeathNote {
         sleep(6100);
         assertFalse(notebook.writeDetails("LTG has spoken"));
         assertEquals("", notebook.getDeathDetails(BOB));
+    }
+
+    static void assertThrows(final ExceptionThrower exception){
+        try {
+            exception.launch();
+            fail("Exception expected");
+        } catch(IllegalStateException | IllegalArgumentException e) {
+            assertTrue(exception instanceof IllegalStateThrower && e instanceof IllegalStateException
+                        || exception instanceof IllegalArgumentThrower && e instanceof IllegalArgumentException);
+        }
+    }
+
+
+    private interface ExceptionThrower{
+        void launch();
+    }
+
+    private interface IllegalArgumentThrower extends ExceptionThrower{
+    }
+
+    private interface IllegalStateThrower extends ExceptionThrower {
     }
 
 }
