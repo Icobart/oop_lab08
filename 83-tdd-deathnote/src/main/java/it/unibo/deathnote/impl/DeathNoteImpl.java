@@ -31,7 +31,9 @@ public class DeathNoteImpl implements DeathNote {
             names.put(name, new ArrayList<>(2));
             lastWrittenName = name;
         }
-        throw new NullPointerException("non existing name"); 
+        else {
+            throw new NullPointerException("non existing name");
+        }
     }
 
     @Override

@@ -35,4 +35,19 @@ class TestDeathNote {
             assertNotEquals(null, notebook.getRule(i));
         }
     }
+
+    @Test
+    public void testWriteHumanName() {
+        assertEquals(false, notebook.isNameWritten("Ramon"));
+        notebook.writeName("Ramon");
+        assertEquals(true, notebook.isNameWritten("Ramon"));
+        assertEquals(false, notebook.isNameWritten("Jogo"));
+        assertEquals(false, notebook.isNameWritten(""));
+    }
+
+    @Test
+    public void testWriteCauseOfDeath() {
+        
+    }
+
 }
