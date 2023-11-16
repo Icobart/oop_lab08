@@ -33,24 +33,14 @@ public class MiniGUI {
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
         final JButton write = new JButton("Print a random number on standard output");
-        canvas.add(write, BorderLayout.CENTER);
-        frame.setContentPane(canvas);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        /*
-         * Handlers
-         
-        write.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                System.out.println(randomGenerator.nextInt());
-            }
-        }); */
         final JPanel newcanvas = new JPanel();
-        newcanvas.setLayout(new BoxLayout(newcanvas, BoxLayout.X_AXIS));
+        newcanvas.setLayout(new BoxLayout(newcanvas, BoxLayout.LINE_AXIS));
         canvas.add(newcanvas, BorderLayout.CENTER);
         newcanvas.add(write, BorderLayout.CENTER);
-        final JTextField result = new JTextField("Result",10);
+        final JTextField result = new JTextField("Result");
         canvas.add(result, BorderLayout.NORTH);
+        frame.setContentPane(canvas);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
