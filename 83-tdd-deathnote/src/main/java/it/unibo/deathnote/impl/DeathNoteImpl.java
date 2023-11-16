@@ -10,10 +10,7 @@ public class DeathNoteImpl implements DeathNote {
 
     private Map<String, Note> names = new HashMap<>();
     private String lastWrittenName;
-    /* 
-    public DeathNoteImpl(List<String> names) {
-        this.names = names;
-    }*/
+    
 
     @Override
     public String getRule(int ruleNumber) {   
